@@ -1,0 +1,78 @@
+---
+layout: default
+title: IRC SSL/TLS Statistics
+---
+
+<h1 id="logo">
+	SSL/TLS Statistics
+	<subtitle>
+		stats.ircdocs.horse
+	</subtitle>
+</h1>
+
+<hr/>
+
+<p>
+	This is a set of statistics retrieved from various IRC networks. How many networks were queried is shown. These stats <strong>do not</strong> represent every IRC network out there, just the ones we've been able to scan.
+</p>
+<p>
+	This site is a <strong>WORK IN PROGRESS</strong> and will be updated as the statistics collection and display is improved. These statistics <strong>should not</strong> be used in anything other than curiosity's sake at this point.
+</p>
+<p>
+	Last Updated: {{ site.data.ssltls.PrettyTime }}
+</p>
+<p>
+	Networks: {{ site.data.ssltls.Connections }}
+</p>
+
+<hr/>
+
+<h2>Default TLS/SSL Ports</h2>
+
+<p>
+	These are the primary SSL/TLS ports that networks present to users. In order, the default ports we check are {% for port in site.data.ssltls.PortCheckOrder %}{{port}}{% if forloop.last == false %}, {% endif %}{% endfor %}.
+</p>
+
+<canvas id="sslPortChart" style="display: block; max-width: 25rem; margin: 0 auto" width="200" height="200"></canvas>
+<script>
+var ctx = $("#sslPortChart");
+var portPieChart = new Chart(ctx[0],{
+	type:'doughnut',
+	options: {
+		cutoutPercentage: 40,
+	},
+	data: {
+		labels: [{% for port in site.data.ssltls.Ports %}"Port {{ port[0] }}"{% if forloop.last == false %}, {% endif %}{% endfor %}],
+		datasets: [{
+			data: [{% for port in site.data.ssltls.Ports %}{{ port[1] }}{% if forloop.last == false %}, {% endif %}{% endfor %}],
+			backgroundColor: [{% for port in site.data.ssltls.Ports %}{% capture ps %}{{ port[0] }}{% endcapture %}"{{ site.data.ssltls.PortColors[ps] }}"{% if forloop.last == false %}, {% endif %}{% endfor %}],
+		}],
+	},
+});
+</script>
+
+<hr />
+
+<h2>Certificate Verification</h2>
+
+<p>
+	For a network to count as 'verified', the certificate they present must be signed by a trusted CA, and the client must be able to verify it for the hostname they are connecting from. The failures in this test represent self-signed certs, expired certs, and servers that did not present a certificate for their actual hostname (say, for the round-robin DNS address clients use).
+</p>
+
+<canvas id="verifiedChart" style="display: block; max-width: 25rem; margin: 0 auto" width="200" height="200"></canvas>
+<script>
+var ctx = $("#verifiedChart");
+var portPieChart = new Chart(ctx[0],{
+	type:'doughnut',
+	options: {
+		cutoutPercentage: 40,
+	},
+	data: {
+		labels: ["Verified", "Not Verified"],
+		datasets: [{
+			data: [{{ site.data.ssltls.Verified }}, {{ site.data.ssltls.Connections }} - {{ site.data.ssltls.Verified }}],
+			backgroundColor: ["#4e5", "#e55"],
+		}],
+	},
+});
+</script>

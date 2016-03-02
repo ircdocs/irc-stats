@@ -1,0 +1,104 @@
+---
+layout: default
+title: Client Capabilities Statistics
+---
+
+<h1 id="logo">
+	Client Capabilities
+	<subtitle>
+		stats.ircdocs.horse
+	</subtitle>
+</h1>
+
+<hr/>
+
+<p>
+	This is a set of statistics retrieved from various IRC networks. How many networks were queried is shown. These stats <strong>do not</strong> represent every IRC network out there, just the ones we've been able to scan.
+</p>
+<p>
+	This site is a <strong>WORK IN PROGRESS</strong> and will be updated as the statistics collection and display is improved. These statistics <strong>should not</strong> be used in anything other than curiosity's sake at this point.
+</p>
+<p>
+	Last Updated: {{ site.data.clientcaps.PrettyTime }}
+</p>
+<p>
+	Networks: {{ site.data.clientcaps.Connections }}
+</p>
+
+<hr/>
+
+<h2>Capability Negotiation Support</h2>
+
+<p>
+	This counts the number of networks that supported client capability negotiation.
+</p>
+
+<canvas id="supportedChart" style="display: block; max-width: 25rem; margin: 0 auto" width="200" height="200"></canvas>
+<script>
+var ctx = $("#supportedChart");
+var portPieChart = new Chart(ctx[0],{
+	type:'doughnut',
+	options: {
+		cutoutPercentage: 40,
+	},
+	data: {
+		labels: ["Suppored", "Not Supported"],
+		datasets: [{
+			data: [{{ site.data.clientcaps.SupportedCaps }}, {{ site.data.clientcaps.Connections }} - {{ site.data.clientcaps.SupportedCaps }}],
+			backgroundColor: ["#4e5", "#e55"],
+		}],
+	},
+});
+</script>
+
+<hr />
+
+<h2>Advertised Capabilities</h2>
+
+<table class="advertised">
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Networks</td>
+			<td>Supported</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for capname in site.data.clientcaps.SortedCapabilities reversed %}
+		<tr>
+			<td><a href="#cap-{{ capname | slugify }}">{{ capname }}</a></td>
+			<td>{{ site.data.clientcaps.Capabilities[capname].Count }}</td>
+			<td class="{% assign percentage = site.data.clientcaps.Capabilities[capname].Supported %}{% include supportclass.html %}">{{ percentage | round: 1 }}%</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<h2>Capability Values</h2>
+
+<div class="tokenlist">
+	{% for cap in site.data.clientcaps.Capabilities %}
+	{% assign capname = cap[0] %}
+	<div id="cap-{{ capname | slugify }}" class="token">
+		<h3>
+			{{ capname }}
+			<div class="support {% assign percentage = site.data.clientcaps.Capabilities[capname].Supported %}{% include supportclass.html %}">{{ percentage | round: 1 }}%</div>
+		</h3>
+		{% if cap[1].Values.size > 0 %}
+		<table class="advertised">
+			<thead>
+				<tr>
+					<td>Value</td>
+					<td>Networks</td>
+					<td>Supported</td>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		{% else %}
+		No Values Advertised
+		{% endif %}
+	</div>
+	{% endfor %}
+</div>

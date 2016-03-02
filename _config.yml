@@ -1,0 +1,9 @@
+# Files/Folders to exclude from the final output
+exclude:
+  - config.rb
+  - .sass-cache
+
+permalink: none
+
+highlighter: pygments
+markdown: rdiscount

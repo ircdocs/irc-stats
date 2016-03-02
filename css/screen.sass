@@ -1,0 +1,263 @@
+---
+---
+
+// variables
+//
+$desktop-width: 57rem
+$mobile-width: 30rem
+$body_padding: 1rem 1rem
+$standard_font_family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif
+$reading_font_family: "Palatino Linotype", Palatino, Palladio, "URW Palladio L", "Book Antiqua", Baskerville, "Bookman Old Style", "Bitstream Charter", "Nimbus Roman No9 L", Garamond, "Apple Garamond", "ITC Garamond Narrow", "New Century Schoolbook", "Century Schoolbook", "Century Schoolbook L", Georgia, serif
+$content_font_family: "Helvetica Neue", Helvetica, Arial, sans-serif
+$mono_font_family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace
+
+// Media queries
+//
+@mixin respond-to($media)
+    @if $media == wide
+        @media only screen and (min-width: $desktop-width)
+            @content
+    @else if $media == desktop
+        @media only screen and (min-width: $mobile-width) and (max-width: $desktop-width)
+            @content
+    @else if $media == mobile
+        @media only screen and (max-width: $mobile-width)
+            @content
+
+// styling
+//
+html
+    box-sizing: border-box
+*, *:before, *:after
+    box-sizing: inherit
+
+// table stuff
+html, body
+    font-family: $standard_font_family
+    height: 100%
+    background: #f7f8fc
+
+#nav
+    width: 100%
+    background: #334
+    color: #f7f7fa
+    > div
+        @include respond-to(wide)
+            max-width: $desktop-width - 2rem
+            margin: 0 auto
+            padding: 0.25rem 0 0.2rem
+        @include respond-to(desktop)
+            margin: 0 1rem
+            padding: 0.25rem 0 0.2rem
+        @include respond-to(mobile)
+            padding: 0.25rem 0.3rem 0.2rem
+        a
+            text-decoration: none
+            color: #e7e7ff
+            &:hover
+                color: #ccf
+
+        nav > a
+            margin-left: 1.5rem
+            &:first-child
+                margin-left: 0
+                @include respond-to(wide)
+                    margin-right: 2.75rem
+                @include respond-to(desktop)
+                    margin-right: 2.75rem
+                @include respond-to(mobile)
+                    display: block
+            @include respond-to(mobile)
+                &:nth-child(2)
+                    margin-left: 0
+            i
+                font-size: 0.9rem
+                vertical-align: baseline
+
+        .wordmark
+            font-style: normal
+
+#content
+    margin: 1rem
+    @include respond-to(wide)
+        max-width: 55rem
+        margin: 1rem auto
+    @include respond-to(desktop)
+        margin: 1rem 1rem
+
+    hr
+        border: #99b 0.2rem solid
+        border-radius: 2rem
+        // width: 40%
+        margin: 1.55rem auto
+
+#logo
+    text-align: center
+
+.link-block
+    margin: 1.25rem 0
+    .name
+        h1, h2, h3
+            margin-bottom: 0
+
+    details, .details
+        margin: 0.75rem 0 0 1rem
+        padding: 0.3rem 1.25rem 1rem
+        border: #abc solid 1px
+        border-right: none
+        border-top: none
+        border-bottom-left-radius: 0.5rem
+        p:first-child
+            margin-top: 0
+        p:last-child
+            margin-bottom: 0
+
+.note
+    &:before
+        content: "Note: "
+        font-weight: bold
+        color: #112
+
+.mono
+    font-family: $mono_font_family
+    font-size: 80%
+
+.img-block
+    display: block
+    margin: 1rem auto
+    max-width: 100%
+
+a
+    transition: color 0.2s
+    font-style: italic
+    text-decoration: none
+
+h1
+    color: #334
+    subtitle
+        display: block
+        font-size: 1.2rem
+        color: #445
+        font-weight: normal
+h2
+    color: #445
+h3
+    color: #556
+
+h1, h2, h3
+    a
+        color: #33a
+        &:hover
+            color: #119
+
+.nobreakinside
+    white-space: nowrap
+
+.homepage-stats
+    display: block
+    padding: 1rem
+    margin: 1.75rem auto
+    border-radius: 1rem
+    border: #abc solid 2px
+    background: #cdf
+    text-align: center
+    width: 44%
+    max-width: 100%
+
+.advertised
+    width: 100%
+    // border: 1px #555 solid
+    border-radius: 0.5rem
+    td
+        padding: 0.2rem 0.5rem
+        &:nth-child(2), &:nth-child(3)
+            text-align: center
+    thead
+        border-bottom: 1px #555 solid
+        font-weight: bold
+        tr:first-child
+            td
+                background-color: rgba(0.2,0.2,0.2,0.1)
+            td:first-child
+                border-top-left-radius: 0.35rem
+            td:last-child
+                border-top-right-radius: 0.35rem
+    tbody
+        tr + tr
+            border-top: 1px rgba(0.5, 0.5, 0.5, 0.15) solid
+        tr:nth-child(even) td
+            background-color: rgba(0.2,0.2,0.2,0.05)
+        tr:last-child
+            td
+                background-color: rgba(0.2,0.2,0.2,0.1)
+            td:first-child
+                border-bottom-left-radius: 0.35rem
+            td:last-child
+                border-bottom-right-radius: 0.35rem
+
+.token
+    padding: 0.75rem 1rem 1rem
+    border-radius: 0.5rem
+    background-color: rgba(0.2,0.2,0.2,0.1)
+    + .token
+        margin-top: 1rem
+    h3
+        margin-top: 0
+        margin-bottom: 0.5rem
+        .support
+            display: inline-block
+            font-size: 0.7rem
+            padding: 0.2rem
+            border-radius: 0.2rem
+            vertical-align: top
+            margin-left: 0.5rem
+        .info
+            font-size: 1.25rem
+            vertical-align: top
+
+.support-high
+    background-color: #1b2 !important
+    color: #fff
+    font-weight: bold
+    text-shadow: 0px 0px 12px rgba(10, 50, 30, 0.4)
+.support-medium-high
+    background-color: #66bb33 !important
+    color: #fff
+    font-weight: bold
+    text-shadow: 0px 0px 12px rgba(30, 50, 30, 0.4)
+.support-medium
+    background-color: #ca3 !important
+    color: #fff
+    font-weight: bold
+    text-shadow: 0px 0px 12px rgba(50, 50, 10, 0.3)
+.support-medium-low
+    background-color: #c63 !important
+    color: #fff
+    font-weight: bold
+    text-shadow: 0px 0px 12px rgba(50, 30, 10, 0.3)
+.support-low
+    background-color: #b33 !important
+    color: #fff
+    font-weight: bold
+    text-shadow: 0px 0px 12px rgba(50, 10, 10, 0.6)
+
+// sticky footer stuff
+#wrapper
+    min-height: 100%
+    margin: 0 auto -3rem
+    padding-bottom: 5rem
+
+#footer
+    height: 3rem
+    padding: 0.5rem
+    text-align: center
+    font-size: 0.8rem
+    line-height: 1.2
+    background: #334
+    color: #f7f7fa
+    a
+        text-decoration: none
+        font-style: italic
+        color: #efefff
+        &:hover
+            color: #ccf

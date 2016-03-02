@@ -1,0 +1,129 @@
+---
+layout: default
+title: IRC RPL_ISUPPORT Statistics
+---
+
+<h1 id="logo">
+	<code>RPL_ISUPPORT</code> Tokens
+	<subtitle>
+		stats.ircdocs.horse
+	</subtitle>
+</h1>
+
+<hr/>
+
+<p>
+	This is a set of statistics retrieved from various IRC networks. How many networks were queried is shown. These stats <strong>do not</strong> represent every IRC network out there, just the ones we've been able to scan.
+</p>
+<p>
+	This site is a <strong>WORK IN PROGRESS</strong> and will be updated as the statistics collection and display is improved. These statistics <strong>should not</strong> be used in anything other than curiosity's sake at this point.
+</p>
+<p>
+	Last Updated: {{ site.data.isupport.PrettyTime }}
+</p>
+<p>
+	Networks: {{ site.data.isupport.Connections }}
+</p>
+
+<hr/>
+
+<!-- everything. EVERYTHING supports RPL_ISUPPORT, uncomment this if that changes.
+<h2><code>RPL_ISUPPORT</code> Support</h2>
+
+<p>
+	This counts the number of networks that dumped the <code>005</code> numeric on connection.
+</p>
+
+<canvas id="supportedChart" style="display: block; max-width: 25rem; margin: 0 auto" width="200" height="200"></canvas>
+<script>
+var ctx = $("#supportedChart");
+var portPieChart = new Chart(ctx[0],{
+	type:'doughnut',
+	options: {
+		cutoutPercentage: 40,
+	},
+	data: {
+		labels: ["Suppored", "Not Supported"],
+		datasets: [{
+			data: [{{ site.data.isupport.SupportedIsupport }}, {{ site.data.isupport.Connections }} - {{ site.data.isupport.SupportedIsupport }}],
+			backgroundColor: ["#4e5", "#e55"],
+		}],
+	},
+});
+</script>
+
+<hr />
+-->
+
+<h2>Advertised Tokens</h2>
+
+<table class="advertised">
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Networks</td>
+			<td>Supported</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for tokenname in site.data.isupport.SortedTokens reversed %}
+		<tr>
+			<td><a href="#token-{{ tokenname | slugify }}">{{ tokenname }}</a></td>
+			<td>{{ site.data.isupport.Tokens[tokenname].Count }}</td>
+			<td class="{% assign percentage = site.data.isupport.Tokens[tokenname].Supported %}{% include supportclass.html %}">{{ percentage | round: 1 }}%</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<h2>Token Values</h2>
+
+<div class="tokenlist">
+	{% for token in site.data.isupport.Tokens %}
+	{% assign tokenname = token[0] %}
+	<div id="token-{{ tokenname | slugify }}" class="token">
+		<h3>
+			{{ tokenname }}
+			<div class="support {% assign percentage = site.data.isupport.Tokens[tokenname].Supported %}{% include supportclass.html %}">{{ percentage | round: 1 }}%</div>
+			<a href="http://defs.ircdocs.horse/defs/isupport.html#{{ tokenname | slugify }}"><i class="fa fa-info-circle info"></i></a>
+		</h3>
+		{% if token[1].Values.size > 0 %}
+		<table class="advertised">
+			<thead>
+				<tr>
+					<td>Value</td>
+					<td>Networks</td>
+					<td>Advertised</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% if token[1].NoValue.Count > 0 %}
+				<tr>
+					<td><code>&lt;No Value&gt;</code></td>
+					<td>{{ token[1].NoValue.Count }}</td>
+					<td class="support">{{ token[1].NoValue.Supported | round: 1 }}%</td>
+				</tr>
+				{% endif %}
+				{% if token[1].ValuesHidden %}
+				<tr>
+					<td><code>&lt;Values Hidden&gt;</code></td>
+					<td>{{ token[1].Values["<hidden>"].Count }}</td>
+					<td class="support">{{ token[1].Values["<hidden>"].Supported | round: 1 }}%</td>
+				</tr>
+				{% else %}
+				{% for value in token[1].Values %}
+				<tr>
+					<td><code>{{ value[0] }}</code></td>
+					<td>{{ value[1].Count }}</td>
+					<td class="support">{{ value[1].Supported | round: 1 }}%</td>
+				</tr>
+				{% endfor %}
+				{% endif %}
+			</tbody>
+		</table>
+		{% else %}
+		No Values Advertised
+		{% endif %}
+	</div>
+	{% endfor %}
+</div>
