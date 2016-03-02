@@ -42,7 +42,7 @@ var portPieChart = new Chart(ctx[0],{
 		cutoutPercentage: 40,
 	},
 	data: {
-		labels: ["Suppored", "Not Supported"],
+		labels: ["Supported", "Not Supported"],
 		datasets: [{
 			data: [{{ site.data.clientcaps.SupportedCaps }}, {{ site.data.clientcaps.Connections }} - {{ site.data.clientcaps.SupportedCaps }}],
 			backgroundColor: ["#4e5", "#e55"],
