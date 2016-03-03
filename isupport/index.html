@@ -87,6 +87,38 @@ var portPieChart = new Chart(ctx[0],{
 			<div class="support {% assign percentage = site.data.isupport.Tokens[tokenname].Supported %}{% include supportclass.html %}">{{ percentage | round: 1 }}%</div>
 			<a href="http://defs.ircdocs.horse/defs/isupport.html#{{ tokenname | slugify }}"><i class="fa fa-info-circle info"></i></a>
 		</h3>
+		{% if token[1].SplitValues != nil %}
+		<h4>Split Values</h4>
+		<table class="advertised">
+			<thead>
+				<tr>
+					<td>Value</td>
+					<td>Networks</td>
+					<td>Advertised</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% if token[1].ValuesHidden %}
+				<tr>
+					<td><code>&lt;Values Hidden&gt;</code></td>
+					<td>{{ token[1].Values["<hidden>"].Count }}</td>
+					<td class="support">{{ token[1].Values["<hidden>"].Supported | round: 1 }}%</td>
+				</tr>
+				{% else %}
+				{% for value in token[1].SplitValues %}
+				<tr>
+					<td><code>{{ value[0] }}</code></td>
+					<td>{{ value[1].Count }}</td>
+					<td class="support">{{ value[1].Supported | round: 1 }}%</td>
+				</tr>
+				{% endfor %}
+				{% endif %}
+			</tbody>
+		</table>
+		{% if token[1].Values.size > 0 %}
+		<h4>Raw Values</h4>
+		{% endif %}
+		{% endif %}
 		{% if token[1].Values.size > 0 %}
 		<table class="advertised">
 			<thead>
