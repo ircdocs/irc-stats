@@ -83,6 +83,7 @@ var portPieChart = new Chart(ctx[0],{
 		<h3>
 			{{ capname }}
 			<div class="support {% assign percentage = site.data.clientcaps.Capabilities[capname].Supported %}{% include supportclass.html %}">{{ percentage | round: 1 }}%</div>
+			<a href="http://defs.ircdocs.horse/defs/clientcaps.html#{{ capname | slugify }}"><i class="fa fa-info-circle info"></i></a>
 		</h3>
 		{% if cap[1].Values.size > 0 %}
 		<table class="advertised">
