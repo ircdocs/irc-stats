@@ -76,3 +76,29 @@ var portPieChart = new Chart(ctx[0],{
 	},
 });
 </script>
+
+<hr />
+
+<h2>Certificate Verification Failures</h2>
+
+<p>
+	This chart represents why certificate validation failed on tested networks.
+</p>
+
+<canvas id="verifyErrorChart" style="display: block; max-width: 25rem; margin: 0 auto" width="200" height="200"></canvas>
+<script>
+var ctx = $("#verifyErrorChart");
+var portPieChart = new Chart(ctx[0],{
+	type:'doughnut',
+	options: {
+		cutoutPercentage: 40,
+	},
+	data: {
+		labels: [{% for err in site.data.ssltls.VerifyErrors %}"{{ err[0] }}"{% if forloop.last == false %}, {% endif %}{% endfor %}],
+		datasets: [{
+			data: [{% for err in site.data.ssltls.VerifyErrors %}{{ err[1] }}{% if forloop.last == false %}, {% endif %}{% endfor %}],
+			backgroundColor: [{% for err in site.data.ssltls.VerifyErrors %}{% capture ps %}{{ err[0] }}{% endcapture %}"{{ site.data.ssltls.VerifyErrorColors[ps] }}"{% if forloop.last == false %}, {% endif %}{% endfor %}],
+		}],
+	},
+});
+</script>
