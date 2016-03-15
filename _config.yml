@@ -5,5 +5,5 @@ exclude:
 
 permalink: none
 
-highlighter: pygments
+highlighter: rouge
 markdown: rdiscount
