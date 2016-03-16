@@ -1,0 +1,55 @@
+---
+layout: default
+title: IRCd Statistics
+---
+
+<h1 id="logo">
+	IRCd Software & Versions
+	<subtitle>
+		stats.ircdocs.horse
+	</subtitle>
+</h1>
+
+<hr/>
+
+<p>
+	This is a set of statistics retrieved from various IRC networks. How many networks were queried is shown. These stats <strong>do not</strong> represent every IRC network out there, just the ones we've been able to scan.
+</p>
+<p>
+	<strong>Note:</strong> These statistics are <strong>not</strong> normalised by network size, and are displayed based only on the number of networks that we queried.
+</p>
+<p>
+	This site is a <strong>WORK IN PROGRESS</strong> and will be updated as the statistics collection and display is improved. These statistics <strong>should not</strong> be used in anything other than curiosity's sake at this point.
+</p>
+<p>
+	Last Updated: {{ site.data.ircds.PrettyTime }}
+</p>
+<p>
+	Networks: {{ site.data.ircds.Connections }}
+</p>
+
+<hr/>
+
+<h2>IRCd Software</h2>
+
+<p>
+	This represents the IRC daemons we found in use when connecting to networks. Major versions of IRC daemons are displayed separately. Network-specific versions of IRC daemons are generally displayed as a part of the original IRC daemon.
+</p>
+
+<canvas id="ircdsChart" style="display: block; max-width: 25rem; margin: 0 auto" width="250" height="450"></canvas>
+<script>
+var ctx = $("#ircdsChart");
+var portPieChart = new Chart(ctx[0],{
+	type:'doughnut',
+	options: {
+		cutoutPercentage: 40,
+	},
+	data: {
+		labels: [{% for ircd in site.data.ircds.Ircds %}"{{ ircd[0] }}"{% if forloop.last == false %}, {% endif %}{% endfor %}],
+		datasets: [{
+			data: [{% for ircd in site.data.ircds.Ircds %}{{ ircd[1] }}{% if forloop.last == false %}, {% endif %}{% endfor %}],
+			backgroundColor: [{% for ircd in site.data.ircds.Ircds %}{% capture id %}{{ ircd[0] }}{% endcapture %}"{{ site.data.ircds.IrcdColors[id] }}"{% if forloop.last == false %}, {% endif %}{% endfor %}],
+		}],
+	},
+});
+</script>
