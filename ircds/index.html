@@ -13,7 +13,7 @@ title: IRCd Statistics
 <hr/>
 
 <p>
-	This is a set of statistics retrieved from various IRC networks. How many networks were queried is shown. These stats <strong>do not</strong> represent every IRC network out there, just the ones we've been able to scan.
+This is a set of statistics retrieved from various IRC networks. How many networks were queried is shown. These stats <strong>do not</strong> represent every IRC network out there, just the ones we've been able to scan. Specific versions are normalized to just the IRCd version number <code>(x{.x}, i.e. 3.5.2)</code>, and other information is ignored when assembling that table.
 </p>
 <p>
 	<strong>Note:</strong> These statistics are <strong>not</strong> normalised by network size, and are displayed based only on the number of networks that we queried.
@@ -53,3 +53,38 @@ var portPieChart = new Chart(ctx[0],{
 	},
 });
 </script>
+
+<hr />
+
+<h2>IRCd Versions</h2>
+
+<div class="tokenlist">
+	{% for vers in site.data.ircds.IrcdVersions %}
+	{% assign swname = vers[0] %}
+	<div id="sw-{{ swname | slugify }}" class="token">
+		<h3>
+			{{ swname }}
+			<div class="support {% assign percentage = site.data.ircds.IrcdVersionCount[swname] | times: 1.0 | divided_by: site.data.ircds.Connections | times: 100.0 %}{% include supportclass.html %}">{{ percentage | round: 1 }}%</div>
+			<!--<a href="http://ircdocs.horse/software/ircds.html#ircd-{{ swname | slugify }}"><i class="fa fa-info-circle info"></i></a>-->
+		</h3>
+		<table class="advertised">
+			<thead>
+				<tr>
+					<td>Version</td>
+					<td>Networks</td>
+					<td>Advertised</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for specific_ver in vers[1] %}
+				<tr>
+					<td><code>{{ specific_ver[0] }}</code></td>
+					<td>{{ specific_ver[1] }}</td>
+					<td class="support">{{ specific_ver[1] | times: 1.0 | divided_by: site.data.ircds.IrcdVersionCount[swname] | times: 100.0 | round: 1 }}%</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% endfor %}
+</div>
