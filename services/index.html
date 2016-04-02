@@ -1,0 +1,93 @@
+---
+layout: default
+title: Services Statistics
+---
+
+<h1 id="logo">
+	Services Software & Versions
+	<subtitle>
+		stats.servicesocs.horse
+	</subtitle>
+</h1>
+
+<hr/>
+
+<p>
+This is a set of statistics retrieved from various IRC networks. How many networks were queried is shown. These stats <strong>do not</strong> represent every IRC network out there, just the ones we've been able to scan. Specific versions are normalized to just the Services version number <code>(x{.x}, i.e. 3.5.2)</code>, and other information is ignored when assembling that table.
+</p>
+<p>
+	These commands are used to retrieve these statistics from networks: <code>"VERSION services.*"</code>, <code>"VERSION *.services"</code>.
+</p>
+<p>
+	<strong>Note:</strong> These statistics are <strong>not</strong> normalised by network size, and are displayed based only on the number of networks that we queried.
+</p>
+<p>
+	This site is a <strong>WORK IN PROGRESS</strong> and will be updated as the statistics collection and display is improved. These statistics <strong>should not</strong> be used in anything other than curiosity's sake at this point.
+</p>
+<p>
+	Last Updated: {{ site.data.services.PrettyTime }}
+</p>
+<p>
+	Networks: {{ site.data.services.Connections }}
+</p>
+
+<hr/>
+
+<h2>Services Software</h2>
+
+<p>
+	This represents the services software we found in use when connecting to networks. Major versions of services are displayed separately.
+</p>
+
+<canvas id="servicesChart" style="display: block; max-width: 25rem; margin: 0 auto" width="250" height="450"></canvas>
+<script>
+var ctx = $("#servicesChart");
+var portPieChart = new Chart(ctx[0],{
+	type:'doughnut',
+	options: {
+		cutoutPercentage: 40,
+	},
+	data: {
+		labels: [{% for services in site.data.services.Services %}"{{ services[0] }}"{% if forloop.last == false %}, {% endif %}{% endfor %}],
+		datasets: [{
+			data: [{% for services in site.data.services.Services %}{{ services[1] }}{% if forloop.last == false %}, {% endif %}{% endfor %}],
+			backgroundColor: [{% for services in site.data.services.Services %}{% capture id %}{{ services[0] }}{% endcapture %}"{{ site.data.services.ServicesColors[id] }}"{% if forloop.last == false %}, {% endif %}{% endfor %}],
+		}],
+	},
+});
+</script>
+
+<hr />
+
+<h2>Services Versions</h2>
+
+<div class="tokenlist">
+	{% for vers in site.data.services.ServicesVersions %}
+	{% assign swname = vers[0] %}
+	<div id="sw-{{ swname | slugify }}" class="token">
+		<h3>
+			{{ swname }}
+			<div class="support {% assign percentage = site.data.services.ServicesVersionCount[swname] | times: 1.0 | divided_by: site.data.services.Connections | times: 100.0 %}{% include supportclass.html %}">{{ percentage | round: 1 }}%</div>
+			<!--<a href="http://ircdocs.horse/software/services.html#services-{{ swname | slugify }}"><i class="fa fa-info-circle info"></i></a>-->
+		</h3>
+		<table class="advertised">
+			<thead>
+				<tr>
+					<td>Version</td>
+					<td>Networks</td>
+					<td>Advertised</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for specific_ver in vers[1] %}
+				<tr>
+					<td><code>{{ specific_ver[0] }}</code></td>
+					<td>{{ specific_ver[1] }}</td>
+					<td class="support">{{ specific_ver[1] | times: 1.0 | divided_by: site.data.services.ServicesVersionCount[swname] | times: 100.0 | round: 1 }}%</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% endfor %}
+</div>
