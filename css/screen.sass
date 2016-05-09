@@ -154,6 +154,29 @@ h1, h2, h3, h4
         &:hover
             color: #119
 
+.warning
+    color: #fff
+    @media screen
+        background: #d54
+    @media print
+        background: #666
+        border: 0.5rem #000 dashed
+    border-radius: 1rem
+    margin: 1.55rem auto
+    padding: 1.2rem 1.3rem
+    font-weight: normal
+    a
+        color: #abf
+        @media print
+            color: #fff
+        &:hover
+            color: #78c
+    p
+        &:first-child
+            margin-top: 0
+        &:last-child
+            margin-bottom: 0
+
 .nobreakinside
     white-space: nowrap
 
