@@ -100,6 +100,28 @@ var portPieChart = new Chart(ctx[0],{
 				</tr>
 			</thead>
 			<tbody>
+				{% if cap[1].NoValue.Count > 0 %}
+				<tr>
+					<td><code>&lt;No Value&gt;</code></td>
+					<td>{{ cap[1].NoValue.Count }}</td>
+					<td class="support">{{ cap[1].NoValue.Supported | round: 1 }}%</td>
+				</tr>
+				{% endif %}
+				{% if cap[1].ValuesHidden %}
+				<tr>
+					<td><code>&lt;Values Hidden&gt;</code></td>
+					<td>{{ cap[1].Values["<hidden>"].Count }}</td>
+					<td class="support">{{ cap[1].Values["<hidden>"].Supported | round: 1 }}%</td>
+				</tr>
+				{% else %}
+				{% for value in cap[1].Values %}
+				<tr>
+					<td><code>{{ value[0] }}</code></td>
+					<td>{{ value[1].Count }}</td>
+					<td class="support">{{ value[1].Supported | round: 1 }}%</td>
+				</tr>
+				{% endfor %}
+				{% endif %}
 			</tbody>
 		</table>
 		{% else %}
