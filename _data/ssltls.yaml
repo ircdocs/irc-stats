@@ -1,4 +1,5 @@
-{"PrettyTime":"Monday, 04-Sep-17 19:15:36 EDT","Timestamp":"2017-09-04T19:15:36-04:00","Connections":224,"Verified":114,"PortColors":{"16666":"#7661f2","6668":"#a7f261","6669":"#f2ac61","6670":"#61f275","6697":"#dff261","7032":"#61def2","9999":"#6184f2"},"Ports":{"16666":1,"6668":1,"6669":1,"6670":5,"6697":207,"7032":1,"9999":8},"PortCheckOrder":[6697,9999,6670],"VerifyErrors":{"Invalid Name":100},"VerifyErrorColors":{"Invalid Name":"#f2a661"}}
+{"PrettyTime":"Sunday, 29-Oct-17 03:12:28 EDT","Timestamp":"2017-10-29T03:12:28-04:00","Connections":217,"Verified":113,"PortColors":{"16666":"#6b61f2","6668":"#f27e61","6669":"#61b1f2","6670":"#f2d961","6697":"#b2f261","7032":"#7af261","9999":"#61f2a2"},"Ports":{"16666":1,"6668":1,"6669":1,"6670":4,"6697":202,"7032":1,"9999":7},"PortCheckOrder":[6697,9999,6670],"VerifyErrors":{"Invalid Name":92},"VerifyErrorColors":{"Invalid Name":"#a8f261"}}
+
 12},"VerifyErrorColors":{"Invalid Name":"#61d3f2"}}
 }
 
